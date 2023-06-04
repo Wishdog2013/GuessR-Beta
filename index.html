@@ -1,147 +1,19 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>GuessR Beta</title>
-  <style>
-    /* Add your custom styles here */
-  </style>
-</head>
-<body>
-  <h1>GuessR Beta</h1>
-  <div id="login-signup-container">
-    <input type="text" id="username-input" placeholder="Username">
-    <input type="password" id="password-input" placeholder="Password">
-    <button id="login-button">Log In</button>
-    <button id="signup-button">Sign Up</button>
-  </div>
-  <h2>Guess the Number</h2>
-  <input type="number" id="guess-input" placeholder="Enter a number between 1 and 100">
-  <button id="submit-button">Submit</button>
-  <p id="result-text"></p>
-  <h2>Leaderboard</h2>
-  <ul id="leaderboard-list"></ul>
-
-  <script>
-    // HTML elements
-    const guessInput = document.getElementById('guess-input');
-    const submitButton = document.getElementById('submit-button');
-    const resultText = document.getElementById('result-text');
-    const leaderboardList = document.getElementById('leaderboard-list');
-    const loginSignupContainer = document.getElementById('login-signup-container');
-    const loginButton = document.getElementById('login-button');
-    const signupButton = document.getElementById('signup-button');
-
-    // Event listeners for login and signup buttons
-    loginButton.addEventListener('click', login);
-    signupButton.addEventListener('click', signup);
-
-    // Login function
-    function login() {
-      const username = document.getElementById('username-input').value;
-      const password = document.getElementById('password-input').value;
-
-      // Check if both username and password are provided
-      if (!username || !password) {
-        alert('Please enter both username and password.');
-        return;
-      }
-
-      // Perform login logic here
-      // You can use the entered username and password to authenticate the user
-
-      // Clear the input fields
-      clearInputFields();
-    }
-
-    // Signup function
-    function signup() {
-      const username = document.getElementById('username-input').value;
-      const password = document.getElementById('password-input').value;
-
-      // Check if both username and password are provided
-      if (!username || !password) {
-        alert('Please enter both username and password.');
-        return;
-      }
-
-      // Perform signup logic here
-      // You can use the entered username and password to create a new user account
-
-      // Clear the input fields
-      clearInputFields();
-    }
-
-    // Function to clear input fields
-    function clearInputFields() {
-      document.getElementById('username-input').value = '';
-      document.getElementById('password-input').value = '';
-    }
-
-    // Submit guess function
-    function submitGuess() {
-      const guess = parseInt(guessInput.value);
-
-      // Validate the guess
-      if (isNaN(guess) || guess < 1 || guess > 100) {
-        resultText.textContent = 'Please enter a valid number between 1 and 100.';
-        return;
-      }
-
-      // Compare the guess with the random number
-      if (guess === randomNumber) {
-        resultText.textContent = 'Congratulations! You guessed the correct number!';
-        updateLeaderboard();
-        resetGame();
-      } else if (guess < randomNumber) {
-        resultText.textContent = 'Too low! Try again.';
-      } else {
-        resultText.textContent = 'Too high! Try again.';
-      }
-    }
-
-    // Update leaderboard function
-    function updateLeaderboard() {
-      const username = document.getElementById('username-input').value;
-      const guesses = parseInt(localStorage.getItem('guesses')) || 0;
-
-      // Retrieve leaderboard data from storage or initialize an empty array
-      const leaderboardData = JSON.parse(localStorage.getItem('leaderboard')) || [];
-
-      // Add the current user and their guesses to the leaderboard data
-      leaderboardData.push({ username, guesses });
-
-      // Sort the leaderboard data based on the number of guesses in ascending order
-      leaderboardData.sort((a, b) => a.guesses - b.guesses);
-
-      // Update the leaderboard HTML
-      leaderboardList.innerHTML = '';
-      leaderboardData.forEach((entry, index) => {
-        const listItem = document.createElement('li');
-        listItem.textContent = `${index + 1}. ${entry.username} - ${entry.guesses} guesses`;
-        leaderboardList.appendChild(listItem);
-      });
-
-      // Store the updated leaderboard data in local storage
-      localStorage.setItem('leaderboard', JSON.stringify(leaderboardData));
-    }
-
-    // Reset the game function
-    function resetGame() {
-      randomNumber = generateRandomNumber();
-      guessInput.value = '';
-      resultText.textContent = '';
-    }
-
-    // Generate random number between 1 and 100
-    function generateRandomNumber() {
-      return Math.floor(Math.random() * 100) + 1;
-    }
-
-    // Initialize the game
-    let randomNumber = generateRandomNumber();
-
-    // Event listener for submit button click
-    submitButton.addEventListener('click', submitGuess);
-  </script>
-</body>
-</html>
+<h1>GuessR Beta</h1>
+<div>
+  <label for="username">Username</label>
+  <input type="text" id="username" />
+</div>
+<div>
+  <label for="password">Password</label>
+  <input type="password" id="password" />
+</div>
+<div>
+  <button id="login-button">Log In</button>
+  <button id="signup-button">Sign Up</button>
+</div>
+<h2>Guess the Number</h2>
+<p>Enter a number between 1 and 100</p>
+<input type="number" id="guess-input" />
+<button id="submit-button">Submit</button>
+<h2>Leaderboard</h2>
+<ul id="leaderboard-list"></ul>
