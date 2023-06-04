@@ -1,8 +1,8 @@
 // HTML elements
 const guessInput = document.getElementById('guess-input');
 const submitButton = document.getElementById('submit-button');
-const resultText = document.getElementById('result-text');
 const leaderboardList = document.getElementById('leaderboard-list');
+const usernameInput = document.getElementById('username');
 
 // Submit guess function
 function submitGuess() {
@@ -10,26 +10,26 @@ function submitGuess() {
 
   // Validate the guess
   if (isNaN(guess) || guess < 1 || guess > 100) {
-    resultText.textContent = 'Please enter a valid number between 1 and 100.';
+    alert('Please enter a valid number between 1 and 100.');
     return;
   }
 
   // Compare the guess with the random number
   if (guess === randomNumber) {
-    resultText.textContent = 'Congratulations! You guessed the correct number!';
+    alert('Congratulations! You guessed the correct number!');
     updateLeaderboard();
     resetGame();
   } else if (guess < randomNumber) {
-    resultText.textContent = 'Too low! Try again.';
+    alert('Too low! Try again.');
   } else {
-    resultText.textContent = 'Too high! Try again.';
+    alert('Too high! Try again.');
   }
 }
 
 // Update leaderboard function
 function updateLeaderboard() {
   const guesses = parseInt(localStorage.getItem('guesses')) || 0;
-  const username = 'Player'; // Change this to the actual username
+  const username = usernameInput.value || 'Player';
 
   // Retrieve leaderboard data from storage or initialize an empty array
   const leaderboardData = JSON.parse(localStorage.getItem('leaderboard')) || [];
@@ -56,7 +56,6 @@ function updateLeaderboard() {
 function resetGame() {
   randomNumber = generateRandomNumber();
   guessInput.value = '';
-  resultText.textContent = '';
 }
 
 // Generate random number between 1 and 100
