@@ -1,75 +1,100 @@
-// HTML elements
-const guessInput = document.getElementById('guess-input');
-const submitButton = document.getElementById('submit-button');
-const leaderboardList = document.getElementById('leaderboard-list');
-const usernameInput = document.getElementById('username');
+// Function to generate a random number within a specified range
+function generateRandomNumber(min, max) {
+  return Math.floor(Math.random() * (max - min + 1) + min);
+}
 
-// Submit guess function
-function submitGuess() {
-  const guess = parseInt(guessInput.value);
+// Function to check the user's guess against the random number
+function checkGuess(randomNumber, guess) {
+  if (guess === randomNumber) {
+    return "equal";
+  } else if (guess < randomNumber) {
+    return "lower";
+  } else {
+    return "higher";
+  }
+}
 
-  // Validate the guess
-  if (isNaN(guess) || guess < 1 || guess > 100) {
-    alert('Please enter a valid number between 1 and 100.');
+// Example usage
+const minRange = 1;
+const maxRange = 100;
+let randomNumber = generateRandomNumber(minRange, maxRange);
+let attempts = 0;
+let leaderboard = []; // Array to store leaderboard data
+let username = ""; // Variable to store the username
+let password = ""; // Variable to store the password
+
+// Function to handle user input and check the guess
+function handleGuess() {
+  const guess = parseInt(document.getElementById("guessInput").value);
+
+  if (isNaN(guess)) {
+    alert("Invalid input! Please enter a valid number.");
     return;
   }
 
-  // Increment the guesses value
-  let guesses = parseInt(localStorage.getItem('guesses')) || 0;
-  guesses++;
-  localStorage.setItem('guesses', guesses);
+  attempts++;
 
-  // Compare the guess with the random number
-  if (guess === randomNumber) {
-    alert('Congratulations! You guessed the correct number!');
-    updateLeaderboard();
-    resetGame();
-  } else if (guess < randomNumber) {
-    alert('Too low! Try again.');
+  const result = checkGuess(randomNumber, guess);
+
+  if (result === "equal") {
+    alert(`Congratulations, ${username}! You guessed the number ${randomNumber} in ${attempts} attempts.`);
+
+    // Reset the game
+    attempts = 0;
+    randomNumber = generateRandomNumber(minRange, maxRange);
+    document.getElementById("guessInput").value = "";
   } else {
-    alert('Too high! Try again.');
+    alert(`Your guess is ${result}. Try again!`);
   }
 }
 
-// Update leaderboard function
-function updateLeaderboard() {
-  const guesses = parseInt(localStorage.getItem('guesses')) || 0;
-  const username = usernameInput.value || 'Player';
-
-  // Retrieve leaderboard data from storage or initialize an empty array
-  const leaderboardData = JSON.parse(localStorage.getItem('leaderboard')) || [];
-
-  // Add the current user and their guesses to the leaderboard data
-  leaderboardData.push({ username, guesses });
-
-  // Sort the leaderboard data based on the number of guesses in ascending order
-  leaderboardData.sort((a, b) => a.guesses - b.guesses);
-
-  // Update the leaderboard HTML
-  leaderboardList.innerHTML = '';
-  leaderboardData.forEach((entry, index) => {
-    const listItem = document.createElement('li');
-    listItem.textContent = `${index + 1}. ${entry.username} - ${entry.guesses} guesses`;
-    leaderboardList.appendChild(listItem);
-  });
-
-  // Store the updated leaderboard data in local storage
-  localStorage.setItem('leaderboard', JSON.stringify(leaderboardData));
+// Function to handle the username input
+function handleUsernameInput() {
+  username = document.getElementById("usernameInput").value;
 }
 
-// Reset the game function
-function resetGame() {
-  randomNumber = generateRandomNumber();
-  guessInput.value = '';
+// Function to handle the password input
+function handlePasswordInput() {
+  password = document.getElementById("passwordInput").value;
 }
 
-// Generate random number between 1 and 100
-function generateRandomNumber() {
-  return Math.floor(Math.random() * 100) + 1;
+// Function to handle the login button click
+function handleLogin() {
+  if (!username || !password) {
+    alert("Please enter both username and password.");
+    return;
+  }
+
+  alert(`Logged in as ${username}`);
+  clearInputs();
 }
 
-// Initialize the game
-let randomNumber = generateRandomNumber();
+// Function to handle the signup button click
+function handleSignup() {
+  if (!username || !password) {
+    alert("Please enter both username and password.");
+    return;
+  }
 
-// Event listener for submit button click
-submitButton.addEventListener('click', submitGuess);
+  alert(`Signed up with username ${username}`);
+  clearInputs();
+}
+
+// Function to clear the input fields
+function clearInputs() {
+  document.getElementById("usernameInput").value = "";
+  document.getElementById("passwordInput").value = "";
+}
+
+// Function to handle the Enter key press
+function handleKeyPress(event) {
+  if (event.key === "Enter") {
+    if (document.activeElement === document.getElementById("guessInput")) {
+      handleGuess();
+    } else if (document.activeElement === document.getElementById("usernameInput")) {
+      handleSignup();
+    } else if (document.activeElement === document.getElementById("passwordInput")) {
+      handleSignup();
+    }
+  }
+}
