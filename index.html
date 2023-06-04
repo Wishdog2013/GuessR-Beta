@@ -1,1 +1,17 @@
+<body>
+  <h1>GuessR Number Game</h1>
+  <label for="usernameInput">Username:</label>
+  <input type="text" id="usernameInput" oninput="handleUsernameInput()" placeholder="Enter your username">
+  <br>
+  <label for="passwordInput">Password:</label>
+  <input type="password" id="passwordInput" oninput="handlePasswordInput()" placeholder="Enter your password">
+  <br>
+  <input type="number" id="guessInput" placeholder="Enter your guess">
+  <button onclick="handleGuess()">Guess</button>
+  <button onclick="handleLogin()">Login</button>
+  <button onclick="handleSignup()">Signup</button>
 
+  <div id="leaderboard"></div>
+
+  <script src="script.js"></script>
+</body>
