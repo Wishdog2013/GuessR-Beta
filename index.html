@@ -1,17 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>GuessR Beta</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
 <body>
   <h1>GuessR Beta</h1>
-  <label for="usernameInput">Username:</label>
-  <input type="text" id="usernameInput" oninput="handleUsernameInput()" placeholder="Enter your username">
-  <br>
-  <label for="passwordInput">Password:</label>
-  <input type="password" id="passwordInput" oninput="handlePasswordInput()" placeholder="Enter your password">
-  <br>
-  <input type="number" id="guessInput" placeholder="Enter your guess">
-  <button onclick="handleGuess()">Guess</button>
-  <button onclick="handleLogin()">Login</button>
-  <button onclick="handleSignup()">Signup</button>
+  
+  <div id="game-container">
+    <h2>Game</h2>
+    <p id="message"></p>
+    <input type="number" id="guessInput" placeholder="Enter your guess">
+    <button onclick="handleGuess()">Guess</button>
+  </div>
 
-  <div id="leaderboard"></div>
+  <div id="leaderboard-container">
+    <h2>Leaderboard</h2>
+    <div id="leaderboard"></div>
+  </div>
+
+  <div id="login-container">
+    <h2>Login / Sign Up</h2>
+    <input type="text" id="usernameInput" placeholder="Username">
+    <input type="password" id="passwordInput" placeholder="Password">
+    <button onclick="handleLogin()">Log In</button>
+    <button onclick="handleSignup()">Sign Up</button>
+    <button onclick="resetGame()">Reset Game</button>
+  </div>
 
   <script src="script.js"></script>
 </body>
+</html>
