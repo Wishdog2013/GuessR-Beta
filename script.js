@@ -14,6 +14,11 @@ function submitGuess() {
     return;
   }
 
+  // Increment the guesses value
+  let guesses = parseInt(localStorage.getItem('guesses')) || 0;
+  guesses++;
+  localStorage.setItem('guesses', guesses);
+
   // Compare the guess with the random number
   if (guess === randomNumber) {
     alert('Congratulations! You guessed the correct number!');
