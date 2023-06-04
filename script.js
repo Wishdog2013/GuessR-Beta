@@ -4,9 +4,6 @@ const submitButton = document.getElementById('submit-button');
 const resultText = document.getElementById('result-text');
 const leaderboardList = document.getElementById('leaderboard-list');
 
-// Event listener for submit button
-submitButton.addEventListener('click', submitGuess);
-
 // Submit guess function
 function submitGuess() {
   const guess = parseInt(guessInput.value);
@@ -31,42 +28,44 @@ function submitGuess() {
 
 // Update leaderboard function
 function updateLeaderboard() {
-  const username = document.getElementById('username-input').value;
-  const guesses = Number(localStorage.getItem('guesses')) || 0;
+  const guesses = parseInt(localStorage.getItem('guesses')) || 0;
+  const username = 'Player'; // Change this to the actual username
 
-  // Update the leaderboard in Airtable
-  fetch('https://airtable.com/appJ9GuAu8wykoIJr?ao=aG9tZXNjcmVlbldvcmtzcGFjZQ', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${process.env.LAT}`
-    },
-    body: JSON.stringify({
-      records: [
-        {
-          fields: {
-            Username: username,
-            Guesses: guesses
-          }
-        }
-      ]
-    })
-  })
-    .then(response => response.json())
-    .then(data => console.log('Leaderboard updated:', data))
-    .catch(error => console.error('Error updating leaderboard:', error));
+  // Retrieve leaderboard data from storage or initialize an empty array
+  const leaderboardData = JSON.parse(localStorage.getItem('leaderboard')) || [];
+
+  // Add the current user and their guesses to the leaderboard data
+  leaderboardData.push({ username, guesses });
+
+  // Sort the leaderboard data based on the number of guesses in ascending order
+  leaderboardData.sort((a, b) => a.guesses - b.guesses);
+
+  // Update the leaderboard HTML
+  leaderboardList.innerHTML = '';
+  leaderboardData.forEach((entry, index) => {
+    const listItem = document.createElement('li');
+    listItem.textContent = `${index + 1}. ${entry.username} - ${entry.guesses} guesses`;
+    leaderboardList.appendChild(listItem);
+  });
+
+  // Store the updated leaderboard data in local storage
+  localStorage.setItem('leaderboard', JSON.stringify(leaderboardData));
 }
 
-// Reset game function
+// Reset the game function
 function resetGame() {
-  // Generate a new random number
-  randomNumber = Math.floor(Math.random() * 100) + 1;
-
-  // Clear the input and result text
+  randomNumber = generateRandomNumber();
   guessInput.value = '';
   resultText.textContent = '';
 }
 
+// Generate random number between 1 and 100
+function generateRandomNumber() {
+  return Math.floor(Math.random() * 100) + 1;
+}
+
 // Initialize the game
-let randomNumber = Math.floor(Math.random() * 100) + 1;
-resetGame();
+let randomNumber = generateRandomNumber();
+
+// Event listener for submit button click
+submitButton.addEventListener('click', submitGuess);
