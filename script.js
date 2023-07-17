@@ -1,9 +1,7 @@
-// Function to generate a random number within a specified range
 function generateRandomNumber(min, max) {
   return Math.floor(Math.random() * (max - min + 1) + min);
 }
 
-// Function to check the user's guess against the random number
 function checkGuess(randomNumber, guess) {
   if (guess === randomNumber) {
     return "equal";
@@ -14,16 +12,13 @@ function checkGuess(randomNumber, guess) {
   }
 }
 
-// Example usage
 const minRange = 1;
 const maxRange = 100;
 let randomNumber = generateRandomNumber(minRange, maxRange);
 let attempts = 0;
-let leaderboard = []; // Array to store leaderboard data
-let username = ""; // Variable to store the username
-let password = ""; // Variable to store the password
+let username = ""; 
+let password = ""; 
 
-// Function to handle user input and check the guess
 function handleGuess() {
   const guess = parseInt(document.getElementById("guessInput").value);
 
@@ -48,17 +43,14 @@ function handleGuess() {
   }
 }
 
-// Function to handle the username input
 function handleUsernameInput() {
   username = document.getElementById("usernameInput").value;
 }
 
-// Function to handle the password input
 function handlePasswordInput() {
   password = document.getElementById("passwordInput").value;
 }
 
-// Function to handle the login button click
 function handleLogin() {
   if (!username || !password) {
     alert("Please enter both username and password.");
@@ -69,7 +61,6 @@ function handleLogin() {
   clearInputs();
 }
 
-// Function to handle the signup button click
 function handleSignup() {
   if (!username || !password) {
     alert("Please enter both username and password.");
@@ -80,13 +71,11 @@ function handleSignup() {
   clearInputs();
 }
 
-// Function to clear the input fields
 function clearInputs() {
   document.getElementById("usernameInput").value = "";
   document.getElementById("passwordInput").value = "";
 }
 
-// Function to handle the Enter key press
 function handleKeyPress(event) {
   if (event.key === "Enter") {
     if (document.activeElement === document.getElementById("guessInput")) {
